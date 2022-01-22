@@ -9,14 +9,14 @@ export default class Meteor extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'meteor');
 
-        this.speed = 50;
-
         this.create();
     }
 
     create() 
     {
         console.log('create meteor');
+
+        this.speed = 50;
         
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);

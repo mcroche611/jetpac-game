@@ -14,8 +14,8 @@ export default class Player extends Phaser.GameObjects.Sprite
   constructor(scene, x, y)
   {
     super(scene, x, y, 'player');
-    this.score = 0;
-    this.lives = 3;
+    this.fuel = false;
+    this.myHeight = 30;
 
     this.setOrigin(0.5, 1);
 
@@ -24,10 +24,6 @@ export default class Player extends Phaser.GameObjects.Sprite
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
 
-    //Ajustamos el tamaño del collider. BCS
-
-    //this.body.setSize(this.width * 0.5, this.height * 0.8)
-    // //this.body.setSize(30, 50);
     this.body.offset.y = 0;
 
     this.speed = 100;
@@ -57,6 +53,14 @@ export default class Player extends Phaser.GameObjects.Sprite
     console.log("Finish player");
   }
 
+  pickUpFuel(player, fuel)
+  {
+    this.scene.pick.play(); 
+    fuel.destroy();
+    this.fuel = true;
+    this.fuelImage = this.scene.add.image(this.x, this.y - this.myHeight, 'fuel');
+  }
+
   /**
    * Métodos preUpdate de Phaser. En este caso solo se encarga del movimiento del jugador.
    * Como se puede ver, no se tratan las colisiones con las estrellas, ya que estas colisiones 
@@ -73,7 +77,7 @@ export default class Player extends Phaser.GameObjects.Sprite
       //this.play('fly', true);
       this.body.setVelocityY(this.jumpSpeed);
     }
-    
+
     if (this.cursors.right.isDown)
     {
       this.flipX = false;
@@ -88,7 +92,7 @@ export default class Player extends Phaser.GameObjects.Sprite
     {
       this.body.setVelocityX(0);
     }
-    
+
     if (this.body.onFloor())
     {
 
@@ -104,21 +108,21 @@ export default class Player extends Phaser.GameObjects.Sprite
     {
       this.play('fly', true);
     }
-    
+
     if (this.esc.isDown)
     {
       this.scene.scene.start('menu');
     }
     else
     {
-      // this.body.setVelocity(0, 0);
-      //this.body.offset.x= 10;
+
     }
 
-    // if (this.scene.physics.overlap(this.scene.bubbles, this)) {
-
-    //   this.decreaseLives();
-    //}
+    if (this.fuel)
+    {
+      this.fuelImage.x = this.x;
+      this.fuelImage.y = this.y - this.myHeight;
+    }
   }
 
 
