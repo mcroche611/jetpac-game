@@ -17,6 +17,38 @@ export default class ParallaxEnemies extends Phaser.Scene {
     super({ key: 'parallaxenemies' });
   }
 
+  create() {
+    const {width, height} = this.scale;
+
+    this.resumeTimeout= 0;
+
+    this.parallaxEnabled= true;
+
+    if (this.parallaxEnabled)
+      this.addParallaxBG();
+    else
+      this.addStandarScrollBG();
+    
+
+
+    // Establecemos los limites del mundo. El ancho lo ponemos a infinito. El alto a la dimensión del gráfico menos 10
+    this.physics.world.setBounds(
+              0, 0, // x, y
+              Number.MAX_SAFE_INTEGER, height - 10 // width, height
+              )
+      
+
+    this.player = new Player(this, 200, 300);
+    
+  
+    this.explosion = this.sound.add('explosion');
+
+    this.configCameraForScroll();
+
+    this.planificaCreacionEnemigo();
+
+   
+  }
   
 
   addStandarBG()
@@ -112,38 +144,7 @@ export default class ParallaxEnemies extends Phaser.Scene {
   /**
    * Creación de los elementos de la escena principal de juego
    */
-  create() {
-    const {width, height} = this.scale;
-
-    this.resumeTimeout= 0;
-
-    this.parallaxEnabled= true;
-
-    if (this.parallaxEnabled)
-      this.addParallaxBG();
-    else
-      this.addStandarScrollBG();
-    
-
-
-    // Establecemos los limites del mundo. El ancho lo ponemos a infinito. El alto a la dimensión del gráfico menos 10
-    this.physics.world.setBounds(
-              0, 0, // x, y
-              Number.MAX_SAFE_INTEGER, height - 10 // width, height
-              )
-      
-
-    this.player = new Player(this, 200, 300);
-    
   
-    this.explosion = this.sound.add('explosion');
-
-    this.configCameraForScroll();
-
-    this.planificaCreacionEnemigo();
-
-   
-  }
 
   planificaCreacionEnemigo()
   {

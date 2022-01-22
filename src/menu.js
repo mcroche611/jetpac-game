@@ -21,22 +21,38 @@ export default class Menu extends Phaser.Scene {
       //     this.musica.play();
       // });
 
-    let numObjects = 
-    { 
-      cdMeteors = 2,
-      numFuel = 2
-    }
+    let paramNivel = {};
 
-    let text = this.add.text(200, 100, 'Facil');
+    let x = 80;
+
+    let text = this.add.text(x, 40, 'Facil');
     text.setInteractive({ useHandCursor: true });
-    text.on('pointerdown', () => this.scene.start('space', numObjects));
+    text.on('pointerdown', () => 
+    {
+      paramNivel.cdMeteors = 2000;
+      paramNivel.numFuel = 2;
 
-    let text2 = this.add.text(200, 200, 'Intermedio');
+      this.scene.start('space', paramNivel);
+    });
+
+    let text2 = this.add.text(x, 80, 'Intermedio');
     text2.setInteractive({ useHandCursor: true });
-    text2.on('pointerdown', () => this.scene.start('space', numObjects));
+    text2.on('pointerdown', () => 
+    {
+      paramNivel.cdMeteors = 1000;
+      paramNivel.numFuel = 3;
 
-    let text3 = this.add.text(200, 300, 'Dificil');
+      this.scene.start('space', paramNivel);
+    });
+
+    let text3 = this.add.text(x, 120, 'Dificil');
     text3.setInteractive({ useHandCursor: true });
-    text3.on('pointerdown', () => this.scene.start('space', numObjects));
+    text3.on('pointerdown', () => 
+    {
+      paramNivel.cdMeteors = 500;
+      paramNivel.numFuel = 5;
+
+      this.scene.start('space', paramNivel);
+    });
   }
 }

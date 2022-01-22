@@ -22,18 +22,15 @@ export default class Boot extends Phaser.Scene {
 
     this.load.image('fuel', 'fuel.png');
     this.load.image('spaceship', 'spaceship.png');
-    this.load.image('tiles', 'tileset.png');
+    this.load.image('jetpac_tiles', 'tileset.png');
+    this.load.image('dungeontiles', 'dungeon_tiles.png');
+    this.load.image('black_tiles', 'Black.png');
     this.load.spritesheet('player', 'jetpac.png',
     { frameWidth: 17, frameHeight: 24 });
     this.load.spritesheet('explosion', 'explosion.png', 
     { frameWidth: 24, frameHeight: 17 });
     this.load.spritesheet('meteor', 'meteor.png', 
     { frameWidth: 16, frameHeight: 14 });
-    
-    //Cargamos los fondos
-    this.load.image('sky', 'sky-clouds.jpg');
-    this.load.image('mountains', 'mountains1000.png');
-    this.load.image('menuprincipal', 'menuprincipal.png');
         
     //Sonido
     this.load.setPath('assets/sounds/');
@@ -44,6 +41,7 @@ export default class Boot extends Phaser.Scene {
     this.load.audio('lose', 'lose.wav');
 
     //Tiled
+    console.log("Cargando mapas");
     this.load.setPath('assets/map/');
     this.load.tilemapTiledJSON('map', 'space_map.json');
   }
@@ -53,6 +51,6 @@ export default class Boot extends Phaser.Scene {
    * nivel del juego
    */
   create() {
-    this.scene.start('mainmenu');
+    this.scene.start('menu');
   }
 }

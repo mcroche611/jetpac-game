@@ -1,7 +1,9 @@
-import Menu from "./menu";
-import Space from "./space";
+import Boot from "./boot.js";
+import Menu from "./menu.js";
+import Space from "./space.js";
 
-window.onload = ()=>{
+window.onload = () =>
+{
 
     const config = {
         type: Phaser.AUTO,
@@ -12,7 +14,16 @@ window.onload = ()=>{
             autoCenter: Phaser.Scale.Center.CENTER_HORIZONTALLY
         },
         pixelArt: true,
-        scene: [Menu, Space]
+        scene: [Boot, Menu, Space],
+        physics: 
+        {
+            default: 'arcade',
+            arcade: 
+            {
+                gravity: { y: 500 },
+                debug: true
+            }
+        }
     };
 
     new Phaser.Game(config);

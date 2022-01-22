@@ -1,5 +1,3 @@
-//import Hook from './hook.js';
-
 /**
  * Clase que representa el jugador del juego. El jugador se mueve por el mundo usando los cursores.
  * También almacena la puntuación o número de estrellas que ha recogido hasta el momento.
@@ -18,21 +16,22 @@ export default class Player extends Phaser.GameObjects.Sprite
     super(scene, x, y, 'player');
     this.score = 0;
     this.lives = 3;
-    this.scene.add.existing(this);
-    this.scene.physics.add.existing(this);
 
     this.setOrigin(0.5, 1);
 
-    this.body.setAllowGravity(false);
+    console.log("Creating player");
+
+    this.scene.add.existing(this);
+    this.scene.physics.add.existing(this);
 
     //Ajustamos el tamaño del collider. BCS
 
-    this.body.setSize(this.width * 0.5, this.height * 0.8)
-    //this.body.setSize(30, 50);
+    //this.body.setSize(this.width * 0.5, this.height * 0.8)
+    // //this.body.setSize(30, 50);
     this.body.offset.y = 0;
 
-    this.speed = 300;
-    this.jumpSpeed = -400;
+    this.speed = 100;
+    this.jumpSpeed = -100;
     // Esta label es la UI en la que pondremos la puntuación del jugador
     this.label = this.scene.add.text(10, 10, "");
 
@@ -40,44 +39,22 @@ export default class Player extends Phaser.GameObjects.Sprite
 
     this.space = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-    this.updateScore();
 
     this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers('player', { start: 8, end: 14 }),
-      frameRate: 5, // Velocidad de la animación
-      repeat: -1    // Animación en bucle
-    });
-
-    this.play('idle');
-
-    this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers('player', { start: 72, end: 75 }),
+      key: 'walk',
+      frames: this.anims.generateFrameNumbers('player', { start: 4, end: 7 }),
       frameRate: 10,
       repeat: -1
     });
 
     this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers('player', { start: 92, end: 95 }),
+      key: 'fly',
+      frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
       frameRate: 10,
       repeat: -1
     });
 
-    this.anims.create({
-      key: 'up',
-      frames: this.anims.generateFrameNumbers('player', { start: 92, end: 95 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'down',
-      frames: this.anims.generateFrameNumbers('playeranim', { start: 72, end: 75 }),
-      frameRate: 10,
-      repeat: -1
-    });
+    console.log("Finish player");
   }
 
   /**
@@ -91,18 +68,50 @@ export default class Player extends Phaser.GameObjects.Sprite
     super.preUpdate(t, dt);
 
     //console.log(`Player (${this.x}, ${this.y})`);
-    if (this.cursors.up.isDown && this.body.onFloor())
+    if (this.cursors.up.isDown)
     {
+      //this.play('fly', true);
       this.body.setVelocityY(this.jumpSpeed);
     }
-    else if (this.esc.isDown)
+    
+    if (this.cursors.right.isDown)
     {
-      this.scene.scene.start('mainmenu');
+      this.flipX = false;
+      this.body.setVelocityX(this.speed);
+    }
+    else if (this.cursors.left.isDown)
+    {
+      this.flipX = true;
+      this.body.setVelocityX(-this.speed);
     }
     else
     {
-      this.body.setVelocity(0, 0);
-      this.play('idle', true);
+      this.body.setVelocityX(0);
+    }
+    
+    if (this.body.onFloor())
+    {
+
+      //console.log('velocity ', this.body.velocity.x);
+      if (this.body.velocity.x != 0) 
+      {
+        this.play('walk', true);
+      }
+      else
+        this.play('walk', false);
+    }
+    else
+    {
+      this.play('fly', true);
+    }
+    
+    if (this.esc.isDown)
+    {
+      this.scene.scene.start('menu');
+    }
+    else
+    {
+      // this.body.setVelocity(0, 0);
       //this.body.offset.x= 10;
     }
 
